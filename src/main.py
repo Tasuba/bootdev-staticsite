@@ -1,15 +1,9 @@
-from textnode import TextNode
+from textnode import TextNode, TextType
 
 
 def main():
-    TEXT = "Hello, World!"
-    TEXT_TYPE = 'normal'
-    URL = "https://www.google.com"
-
-    node_args = (TEXT, TEXT_TYPE, URL)
-
-    print(TextNode(*node_args))
+    node = TextNode("This is some anchor text", TextType.LINK, "https://www.boot.dev")
+    print(node)
 
 
-if __name__ == "__main__":
-    main()
+main()
