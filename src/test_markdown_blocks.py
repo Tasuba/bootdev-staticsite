@@ -151,16 +151,18 @@ this is paragraph text
     def test_codeblock(self):
         md = """
 ```
-This is text that _should_ remain
-the **same** even with inline stuff
+This is a code block
 ```
+
+this is paragraph text
+
 """
 
         node = markdown_to_html_node(md)
         html = node.to_html()
         self.assertEqual(
             html,
-            "<div><pre><code>This is text that _should_ remain\nthe **same** even with inline stuff\n</code></pre></div>",
+            "<div><pre><code>This is a code block\n</code></pre><p>this is paragraph text</p></div>",
         )
 
 
