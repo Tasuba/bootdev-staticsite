@@ -2,14 +2,14 @@ from enum import Enum
 
 from htmlnode import ParentNode
 from inline_markdown import text_to_textnodes
-from textnode import text_node_to_html_node
+from textnode import text_node_to_html_node, TextNode, TextType
 
 
 class BlockType(Enum):
     PARAGRAPH = "paragraph"
     HEADING = "heading"
     CODE = "code"
-    QUOTE = "quite"
+    QUOTE = "quote"
     OLIST = "ordered_list"
     ULIST = "unordered_list"
 
@@ -37,11 +37,6 @@ def block_to_block_type(block):
             if not line.startswith(">"):
                 return BlockType.PARAGRAPH
         return BlockType.QUOTE
-    if block.startswith("- "):
-        for line in lines:
-            if not line.startswith("- "):
-                return BlockType.PARAGRAPH
-        return BlockType.ULIST
     if block.startswith("- "):
         for line in lines:
             if not line.startswith("- "):
@@ -117,8 +112,9 @@ def code_to_html_node(block):
     if not block.startswith("```") or not block.endswith("```"):
         raise ValueError("invalid code block")
     text = block[4:-3]
-    children = text_to_children(text)
-    code = ParentNode("code", children)
+    raw_text_node = TextNode(text, TextType.TEXT)
+    child = text_node_to_html_node(raw_text_node)
+    code = ParentNode("code", [child])
     return ParentNode("pre", [code])
 
 
